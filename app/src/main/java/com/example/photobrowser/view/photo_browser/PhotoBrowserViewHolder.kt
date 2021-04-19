@@ -13,11 +13,6 @@ class PhotoBrowserViewHolder(
     private val binding: ItemPhotoBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    companion object {
-        private const val PROGRESS_STROKE_WIDTH = 5F
-        private const val PROGRESS_CENTER_RADIUS = 30F
-    }
-
     fun bindItem(photoUI: PhotoUI) {
         val photoUrl = photoUI.photoUrl
         val context = binding.root.context
@@ -27,7 +22,7 @@ class PhotoBrowserViewHolder(
             .load(photoUrl)
             .placeholder(getCircularProgressDrawable(context))
             .apply(photoRequestOptions)
-            .into(binding.ivPhoto)
+            .into(binding.photo)
     }
 
     private fun getCircularProgressDrawable(context: Context) =
@@ -37,4 +32,8 @@ class PhotoBrowserViewHolder(
             start()
         }
 
+    companion object {
+        private const val PROGRESS_STROKE_WIDTH = 5F
+        private const val PROGRESS_CENTER_RADIUS = 30F
+    }
 }

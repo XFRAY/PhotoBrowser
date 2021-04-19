@@ -7,10 +7,6 @@ import okhttp3.Response
 
 class NoJsonCallbackInterceptor : Interceptor {
 
-    companion object{
-        private const val NO_JSON_CALLBACK = "nojsoncallback"
-    }
-
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
         val originalHttpUrl = original.url
@@ -21,5 +17,9 @@ class NoJsonCallbackInterceptor : Interceptor {
         val request = original.newBuilder()
             .url(url).build()
         return chain.proceed(request)
+    }
+
+    companion object{
+        private const val NO_JSON_CALLBACK = "nojsoncallback"
     }
 }

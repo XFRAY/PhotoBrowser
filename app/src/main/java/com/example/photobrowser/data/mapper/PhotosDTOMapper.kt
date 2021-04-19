@@ -21,9 +21,8 @@ object PhotosDTOMapper {
             val serverId = it.server
             val imageId = it.id
             val secret = it.secret
-            val largeUrl = getPhotoUrl(serverId, imageId, secret, PhotoDTO.Quality.LARGE)
-            val thumbnailUrl = getPhotoUrl(serverId, imageId, secret, PhotoDTO.Quality.THUMBNAIL)
-            val photoView = PhotoUI(imageId, largeUrl, thumbnailUrl)
+            val largeUrl = getPhotoUrl(serverId, imageId, secret)
+            val photoView = PhotoUI(imageId, largeUrl)
             photoListView.add(photoView)
         }
         return PageUI(page, nextPage, pageCount, perPage, photoListView)
@@ -32,10 +31,8 @@ object PhotosDTOMapper {
     private fun getPhotoUrl(
         serverId: Int,
         imageId: String,
-        secret: String,
-        quality: PhotoDTO.Quality
+        secret: String
     ): String {
-        return "${BuildConfig.PHOTO_URL}$serverId/${imageId}_${secret}_${quality.value}.jpg"
+        return "${BuildConfig.PHOTO_URL}$serverId/${imageId}_${secret}_b.jpg"
     }
-
 }

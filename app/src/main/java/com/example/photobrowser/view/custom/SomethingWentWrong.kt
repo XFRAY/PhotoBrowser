@@ -15,7 +15,6 @@ class SomethingWentWrong @JvmOverloads constructor(
     private val binding = ViewSomethingWentWrongBinding.inflate(LayoutInflater.from(context), this, true)
 
     fun setOnRetryClickListener(onClickListener: OnClickListener) {
-        binding.btnRetry.setOnClickListener(onClickListener)
+        binding.retry.setOnClickListener(onClickListener)
     }
-
 }

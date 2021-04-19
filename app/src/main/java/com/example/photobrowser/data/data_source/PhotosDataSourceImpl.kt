@@ -3,50 +3,36 @@ package com.example.photobrowser.data.data_source
 import androidx.lifecycle.LiveData
 import androidx.paging.PageKeyedDataSource
 import com.example.photobrowser.data.LoadingState
-import com.example.photobrowser.data.mapper.PhotosDTOMapper
 import com.example.photobrowser.data.model.ui.PhotoUI
-import com.example.photobrowser.data.network.ApiService
+import com.example.photobrowser.data.repository.PhotosRepository
 import com.example.photobrowser.extensions.live_data.SingleLiveEvent
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.functions.Action
+import com.example.photobrowser.extensions.rx_java.addTo
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class PhotosDataSourceImpl(
-    private val apiService: ApiService,
+    private val photosRepository: PhotosRepository,
 ) : PageKeyedDataSource<Int, PhotoUI>(), PhotosDataSource {
-
-    companion object {
-        private const val INITIAL_PAGE = 1
-    }
 
     private val loadingStateData = SingleLiveEvent<LoadingState>()
     private val initialLoadingStateData = SingleLiveEvent<LoadingState>()
-    private var retryLoadInitialCompletable: Completable? = null
-    private var retryLoadAfterCompletable: Completable? = null
-
-    private fun setRetryLoadInitialAction(action: Action) {
-        retryLoadInitialCompletable = Completable.fromAction(action)
-    }
-
-    private fun setRetryLoadAfterAction(action: Action) {
-        retryLoadAfterCompletable = Completable.fromAction(action)
-    }
+    private var retryLoadAction: (() -> Unit?)? = null
+    private val compositeDisposable = CompositeDisposable()
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, PhotoUI>
     ) {
         initialLoadingStateData.postValue(LoadingState.LOADING)
-        apiService.getRecentPhotos(INITIAL_PAGE)
-            .map { return@map PhotosDTOMapper.transform(it) }
+        photosRepository.getRecentPhotos(INITIAL_PAGE)
             .subscribe({
-                initialLoadingStateData.postValue(LoadingState.DONE)
+                initialLoadingStateData.postValue(LoadingState.SUCCESS)
                 val photoList = it.photoList
                 val nextPageKey = it.nextPage
                 callback.onResult(photoList, null, nextPageKey)
             }, {
-                setRetryLoadInitialAction { loadInitial(params, callback) }
+                retryLoadAction = { loadInitial(params, callback) }
                 initialLoadingStateData.postValue(LoadingState.ERROR)
-            })
+            }).addTo(compositeDisposable)
     }
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, PhotoUI>) {
@@ -56,28 +42,31 @@ class PhotosDataSourceImpl(
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, PhotoUI>) {
         loadingStateData.postValue(LoadingState.LOADING)
         val pageKey = params.key
-        apiService.getRecentPhotos(pageKey)
-            .map { return@map PhotosDTOMapper.transform(it) }
+        photosRepository.getRecentPhotos(pageKey)
             .subscribe({
-                loadingStateData.postValue(LoadingState.DONE)
+                loadingStateData.postValue(LoadingState.SUCCESS)
                 val photoList = it.photoList
                 val adjacentPageKey = it.nextPage
                 callback.onResult(photoList, adjacentPageKey)
             }, {
-                setRetryLoadAfterAction { loadAfter(params, callback) }
+                retryLoadAction = { loadAfter(params, callback) }
                 loadingStateData.postValue(LoadingState.ERROR)
-            })
+            }).addTo(compositeDisposable)
     }
 
-    override fun retryLoadInitial() {
-        retryLoadInitialCompletable?.subscribe()
+    override fun retryLoad() {
+        retryLoadAction?.invoke()
     }
 
-    override fun retryLoadAfter() {
-        retryLoadAfterCompletable?.subscribe()
+    override fun clear() {
+        compositeDisposable.clear()
     }
 
     override fun getLoadingStateData(): LiveData<LoadingState> = loadingStateData
 
     override fun getInitialLoadingStateData(): LiveData<LoadingState> = initialLoadingStateData
+
+    companion object {
+        private const val INITIAL_PAGE = 1
+    }
 }

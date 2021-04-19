@@ -9,7 +9,7 @@ interface PhotosDataSource {
 
     fun getInitialLoadingStateData(): LiveData<LoadingState>
 
-    fun retryLoadInitial()
+    fun retryLoad()
 
-    fun retryLoadAfter()
+    fun clear()
 }

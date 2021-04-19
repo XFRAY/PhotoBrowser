@@ -1,26 +1,26 @@
-package com.example.photobrowser.view.photo_browser
+package com.example.photobrowser.view.loading_state
 
 import android.view.View
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.photobrowser.data.LoadingState
-import com.example.photobrowser.databinding.ItemPhotoFooterBinding
+import com.example.photobrowser.databinding.ItemLoadingStateBinding
 
-class PhotoBrowserFooterViewHolder(
-    private val binding: ItemPhotoFooterBinding,
+class LoadingStateViewHolder(
+    private val binding: ItemLoadingStateBinding,
     private val onRetryClickListener: View.OnClickListener
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bindItem(loadingState: LoadingState) {
-        binding.vwSomethingWentWrong.setOnRetryClickListener(onRetryClickListener)
+        binding.somethingWentWrong.setOnRetryClickListener(onRetryClickListener)
         when (loadingState) {
             LoadingState.ERROR -> {
-                binding.vwSomethingWentWrong.isVisible = true
+                binding.somethingWentWrong.isVisible = true
                 binding.progressBar.isGone = true
             }
             LoadingState.LOADING -> {
-                binding.vwSomethingWentWrong.isGone = true
+                binding.somethingWentWrong.isGone = true
                 binding.progressBar.isVisible = true
             }
         }

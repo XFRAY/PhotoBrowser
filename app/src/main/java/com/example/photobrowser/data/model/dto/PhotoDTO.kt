@@ -15,8 +15,4 @@ data class PhotoDTO(
     val farm: Int,
     @SerializedName("title")
     val title: String
-) {
-    enum class Quality(val value: String) {
-        THUMBNAIL("s"), LARGE("b")
-    }
-}
+)

@@ -6,11 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.example.photobrowser.R
 import com.example.photobrowser.data.LoadingState
 import com.example.photobrowser.databinding.ActivityPhotoBrowserBinding
+import com.example.photobrowser.view.loading_state.LoadingStateAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PhotoBrowserActivity : AppCompatActivity() {
@@ -18,6 +19,8 @@ class PhotoBrowserActivity : AppCompatActivity() {
     private val photoBrowserViewModel: PhotoBrowserViewModel by viewModel()
     private lateinit var binding: ActivityPhotoBrowserBinding
     private lateinit var photoBrowserAdapter: PhotoBrowserAdapter
+    private lateinit var loadingStateAdapter: LoadingStateAdapter
+    private lateinit var concatAdapter: ConcatAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,24 +31,25 @@ class PhotoBrowserActivity : AppCompatActivity() {
     }
 
     private fun setupListeners() {
-        binding.vwSomethingWentWrong.setOnRetryClickListener {
-            photoBrowserViewModel.onClickRetryInitialLoad()
+        binding.somethingWentWrong.setOnRetryClickListener {
+            photoBrowserViewModel.onRetryLoad()
         }
     }
 
     private fun setupPhotoBrowserAdapter() {
-        photoBrowserAdapter = PhotoBrowserAdapter(onRetryAfterClickListener)
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        concatAdapter = ConcatAdapter()
+        photoBrowserAdapter = PhotoBrowserAdapter()
+        concatAdapter.addAdapter(photoBrowserAdapter)
+        loadingStateAdapter = LoadingStateAdapter(onRetryAfterClickListener)
         val snapHelper = PagerSnapHelper()
-        with(binding.rvPhotoBrowser) {
-            this.layoutManager = layoutManager
-            adapter = photoBrowserAdapter
+        with(binding.photoList) {
+            adapter = concatAdapter
             snapHelper.attachToRecyclerView(this)
         }
     }
 
     private val onRetryAfterClickListener = View.OnClickListener {
-        photoBrowserViewModel.onClickRetryAfterLoad()
+        photoBrowserViewModel.onRetryLoad()
     }
 
     private fun observeData() {
@@ -54,7 +58,7 @@ class PhotoBrowserActivity : AppCompatActivity() {
         })
 
         photoBrowserViewModel.getLoadingStateData().observe(this, {
-            photoBrowserAdapter.setLoadingState(it)
+            handleLoadingState(it)
         })
 
         photoBrowserViewModel.getInitialLoadingStateData().observe(this, {
@@ -62,19 +66,29 @@ class PhotoBrowserActivity : AppCompatActivity() {
         })
     }
 
+    private fun handleLoadingState(loadingState: LoadingState) {
+        loadingStateAdapter.loadingState = loadingState
+        if (loadingState == LoadingState.LOADING || loadingState == LoadingState.ERROR) {
+            concatAdapter.addAdapter(loadingStateAdapter)
+        } else {
+            concatAdapter.removeAdapter(loadingStateAdapter)
+        }
+    }
+
+
     private fun handleInitialLoadingState(loadingState: LoadingState) {
         when (loadingState) {
             LoadingState.ERROR -> {
                 binding.progressBar.isGone = true
-                binding.vwSomethingWentWrong.isVisible = true
+                binding.somethingWentWrong.isVisible = true
             }
 
             LoadingState.LOADING -> {
-                binding.vwSomethingWentWrong.isGone = true
+                binding.somethingWentWrong.isGone = true
                 binding.progressBar.isVisible = true
             }
 
-            LoadingState.DONE -> {
+            LoadingState.SUCCESS -> {
                 binding.progressBar.isGone = true
             }
         }

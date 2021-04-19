@@ -2,7 +2,6 @@ package com.example.photobrowser.di
 
 import com.example.photobrowser.BuildConfig
 import com.example.photobrowser.data.data_source.PhotosDataSourceFactory
-import com.example.photobrowser.data.mapper.PhotosDTOMapper
 import com.example.photobrowser.data.network.ApiKeyInterceptor
 import com.example.photobrowser.data.network.ApiService
 import com.example.photobrowser.data.network.JsonFormatInterceptor
@@ -17,7 +16,6 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-
 
 val networkModule = module {
     single { provideRetrofit(get()).create(ApiService::class.java) }

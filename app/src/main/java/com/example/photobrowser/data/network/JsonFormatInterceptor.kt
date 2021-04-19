@@ -6,10 +6,6 @@ import okhttp3.Response
 
 class JsonFormatInterceptor : Interceptor {
 
-    companion object{
-        private const val FORMAT = "format"
-    }
-
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
         val originalHttpUrl = original.url
@@ -20,5 +16,9 @@ class JsonFormatInterceptor : Interceptor {
         val request = original.newBuilder()
             .url(url).build()
         return chain.proceed(request)
+    }
+
+    companion object{
+        private const val FORMAT = "format"
     }
 }

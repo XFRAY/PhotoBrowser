@@ -6,10 +6,6 @@ import okhttp3.Response
 
 class ApiKeyInterceptor : Interceptor {
 
-    companion object{
-        private const val API_KEY = "api_key"
-    }
-
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
         val originalHttpUrl = original.url
@@ -20,5 +16,9 @@ class ApiKeyInterceptor : Interceptor {
         val request = original.newBuilder()
             .url(url).build()
         return chain.proceed(request)
+    }
+
+    companion object{
+        private const val API_KEY = "api_key"
     }
 }
