@@ -1,4 +1,4 @@
-package com.example.photobrowser.view.photo_browser
+package com.example.photobrowser.view.browser
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

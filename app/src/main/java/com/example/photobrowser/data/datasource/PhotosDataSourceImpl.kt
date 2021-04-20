@@ -1,12 +1,12 @@
-package com.example.photobrowser.data.data_source
+package com.example.photobrowser.data.datasource
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PageKeyedDataSource
 import com.example.photobrowser.data.LoadingState
 import com.example.photobrowser.data.model.ui.PhotoUI
 import com.example.photobrowser.data.repository.PhotosRepository
-import com.example.photobrowser.extensions.live_data.SingleLiveEvent
-import com.example.photobrowser.extensions.rx_java.addTo
+import com.example.photobrowser.extensions.livedata.SingleLiveEvent
+import com.example.photobrowser.extensions.rxjava.addTo
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class PhotosDataSourceImpl(

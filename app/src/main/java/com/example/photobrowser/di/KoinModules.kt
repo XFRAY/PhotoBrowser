@@ -1,14 +1,14 @@
 package com.example.photobrowser.di
 
 import com.example.photobrowser.BuildConfig
-import com.example.photobrowser.data.data_source.PhotosDataSourceFactory
+import com.example.photobrowser.data.datasource.PhotosDataSourceFactory
 import com.example.photobrowser.data.network.ApiKeyInterceptor
 import com.example.photobrowser.data.network.ApiService
 import com.example.photobrowser.data.network.JsonFormatInterceptor
 import com.example.photobrowser.data.network.NoJsonCallbackInterceptor
 import com.example.photobrowser.data.repository.PhotosRepository
 import com.example.photobrowser.data.repository.PhotosRepositoryImpl
-import com.example.photobrowser.view.photo_browser.PhotoBrowserViewModel
+import com.example.photobrowser.view.browser.PhotoBrowserViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel

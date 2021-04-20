@@ -11,5 +11,5 @@ class PhotosRepositoryImpl(
 
     override fun getRecentPhotos(page: Int): Single<PageUI> =
       apiService.getRecentPhotos(page)
-          .map { return@map PhotosDTOMapper.transform(it) }
+          .map { PhotosDTOMapper.transform(it) }
 }

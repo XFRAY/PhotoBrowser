@@ -1,4 +1,4 @@
-package com.example.photobrowser.view.photo_browser
+package com.example.photobrowser.view.browser
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.photobrowser.data.LoadingState
-import com.example.photobrowser.data.data_source.PhotosDataSource
-import com.example.photobrowser.data.data_source.PhotosDataSourceFactory
+import com.example.photobrowser.data.datasource.PhotosDataSource
+import com.example.photobrowser.data.datasource.PhotosDataSourceFactory
 import com.example.photobrowser.data.model.ui.PhotoUI
 
 class PhotoBrowserViewModel(

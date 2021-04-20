@@ -1,4 +1,4 @@
-package com.example.photobrowser.extensions.live_data
+package com.example.photobrowser.extensions.livedata
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.LifecycleOwner

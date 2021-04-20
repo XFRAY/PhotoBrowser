@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PhotoBrowser">
-        <activity android:name=".view.photo_browser.PhotoBrowserActivity">
+        <activity android:name=".view.browser.PhotoBrowserActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

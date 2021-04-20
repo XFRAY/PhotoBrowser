@@ -1,4 +1,4 @@
-package com.example.photobrowser.view.photo_browser
+package com.example.photobrowser.view.browser
 
 import android.os.Bundle
 import android.view.View
@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import com.example.photobrowser.R
 import com.example.photobrowser.data.LoadingState
 import com.example.photobrowser.databinding.ActivityPhotoBrowserBinding
-import com.example.photobrowser.view.loading_state.LoadingStateAdapter
+import com.example.photobrowser.view.state.LoadingStateAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PhotoBrowserActivity : AppCompatActivity() {

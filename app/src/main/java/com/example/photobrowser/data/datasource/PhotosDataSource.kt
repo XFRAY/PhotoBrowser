@@ -1,4 +1,4 @@
-package com.example.photobrowser.data.data_source
+package com.example.photobrowser.data.datasource
 
 import androidx.lifecycle.LiveData
 import com.example.photobrowser.data.LoadingState

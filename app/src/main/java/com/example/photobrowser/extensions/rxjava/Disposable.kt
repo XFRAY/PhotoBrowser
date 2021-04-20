@@ -1,4 +1,4 @@
-package com.example.photobrowser.extensions.rx_java
+package com.example.photobrowser.extensions.rxjava
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable

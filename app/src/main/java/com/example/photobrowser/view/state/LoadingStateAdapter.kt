@@ -1,4 +1,4 @@
-package com.example.photobrowser.view.loading_state
+package com.example.photobrowser.view.state
 
 import android.view.LayoutInflater
 import android.view.View

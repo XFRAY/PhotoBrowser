@@ -1,11 +1,10 @@
-package com.example.photobrowser.data.data_source
+package com.example.photobrowser.data.datasource
 
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import com.example.photobrowser.data.model.ui.PhotoUI
-import com.example.photobrowser.data.network.ApiService
 import com.example.photobrowser.data.repository.PhotosRepository
-import com.example.photobrowser.extensions.live_data.SingleLiveEvent
+import com.example.photobrowser.extensions.livedata.SingleLiveEvent
 
 class PhotosDataSourceFactory(
     private val photosRepository: PhotosRepository
