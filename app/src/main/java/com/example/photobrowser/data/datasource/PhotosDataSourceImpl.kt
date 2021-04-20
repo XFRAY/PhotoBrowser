@@ -15,7 +15,7 @@ class PhotosDataSourceImpl(
 
     private val loadingStateData = SingleLiveEvent<LoadingState>()
     private val initialLoadingStateData = SingleLiveEvent<LoadingState>()
-    private var retryLoadAction: (() -> Unit?)? = null
+    private lateinit var retryLoadAction: () -> Unit
     private val compositeDisposable = CompositeDisposable()
 
     override fun loadInitial(
@@ -55,7 +55,7 @@ class PhotosDataSourceImpl(
     }
 
     override fun retryLoad() {
-        retryLoadAction?.invoke()
+        retryLoadAction.invoke()
     }
 
     override fun clear() {
